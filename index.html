@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Study Planner</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h1>Smart Study Planner</h1>
+            <p>A smart study planner isn’t about doing more—it’s about doing the right things at the right time.</p>
+        </div>
+        
+        <button class="add-task-btn" id="open-task-modal">
+            <i class="fas fa-plus"></i>
+            <span>Add Task</span>
+        </button>
+        
+        <ul class="sidebar-nav">
+            <li><a href="#" class="nav-link active" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+            <li><a href="#" class="nav-link" data-page="calendar"><i class="fas fa-calendar-alt"></i> <span>Calendar</span></a></li>
+            <li><a href="#" class="nav-link" data-page="timer"><i class="fas fa-clock"></i> <span>Study Timer</span></a></li>
+            <li><a href="#" class="nav-link" data-page="progress"><i class="fas fa-chart-line"></i> <span>Progress</span></a></li>
+            <li><a href="#" class="nav-link" data-page="subjects"><i class="fas fa-book"></i> <span>Subjects</span></a></li>
+        </ul>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Page -->
+        <section id="dashboard" class="page active">
+            <div class="welcome-message">
+                <h2>Welcome back, Scholar!</h2>
+                <p id="welcome-message-text">You're all caught up! Great work on staying organized.</p>
+                <div class="study-streak">
+                    <div class="streak-count" id="streak-count">0</div>
+                    <div class="streak-label">day study streak!</div>
+                </div>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-label">Completion Rate</div>
+                    <div class="stat-value" id="completion-rate">0%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="completion-progress"></div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">Today's Study Time</div>
+                    <div class="stat-value" id="today-study-time">0h 0m</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">Tasks Completed</div>
+                    <div class="stat-value" id="tasks-completed">0/0</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">Study Sessions</div>
+                    <div class="stat-value" id="study-sessions">0</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2>Your Tasks</h2>
+                    <div class="filter-controls">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="active">Active</button>
+                        <button class="filter-btn" data-filter="completed">Completed</button>
+                        <button class="filter-btn" data-filter="urgent">Urgent</button>
+                    </div>
+                </div>
+                <p id="tasks-message">No tasks yet. Add your first task to get started!</p>
+                <ul class="task-list" id="tasks-list">
+                    <!-- Tasks will be added here dynamically -->
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Calendar Page -->
+        <section id="calendar" class="page">
+            <div class="card">
+                <h2>September 2025</h2>
+                <p>Today: <span id="current-date">September 27, 2025</span></p>
+                
+                <div class="calendar">
+                    <div class="calendar-header">Sun</div>
+                    <div class="calendar-header">Mon</div>
+                    <div class="calendar-header">Tue</div>
+                    <div class="calendar-header">Wed</div>
+                    <div class="calendar-header">Thu</div>
+                    <div class="calendar-header">Fri</div>
+                    <div class="calendar-header">Sat</div>
+                    
+                    <!-- Calendar days will be generated dynamically -->
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Tasks for Selected Date</h2>
+                <p id="calendar-tasks-message">Select a date to view tasks</p>
+                <ul class="task-list" id="calendar-tasks">
+                    <!-- Tasks for selected date will be added here dynamically -->
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Study Timer Page -->
+        <section id="timer" class="page">
+            <div class="timer-container">
+                <div class="card">
+                    <h2>Focus Session</h2>
+                    <div class="timer-display" id="timer-display">25:00</div>
+                    
+                    <div class="timer-presets">
+                        <button class="timer-preset active" data-minutes="25">Pomodoro (25m)</button>
+                        <button class="timer-preset" data-minutes="50">Deep Focus (50m)</button>
+                        <button class="timer-preset" data-minutes="15">Quick Study (15m)</button>
+                    </div>
+                    
+                    <div class="timer-controls">
+                        <button class="btn btn-primary" id="start-timer">
+                            <i class="fas fa-play"></i> Start
+                        </button>
+                        <button class="btn btn-secondary" id="pause-timer" disabled>
+                            <i class="fas fa-pause"></i> Pause
+                        </button>
+                        <button class="btn btn-secondary" id="reset-timer">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+                    
+                    <div class="session-details">
+                        <div class="form-group">
+                            <label for="task-select">Select Task (Optional)</label>
+                            <select class="form-control" id="task-select">
+                                <option>No specific task</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject-input">Subject/Topic</label>
+                            <input type="text" class="form-control" id="subject-input" placeholder="What are you studying?">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="session-notes">Session Notes</label>
+                        <textarea class="form-control" id="session-notes" placeholder="Add notes about this study session..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Progress Page -->
+        <section id="progress" class="page">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-label">Completion Rate</div>
+                    <div class="stat-value" id="progress-completion-rate">0%</div>
+                    <div class="stat-label" id="progress-tasks-count">0/0 tasks</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">Total Study Time</div>
+                    <div class="stat-value" id="total-study-time">0m</div>
+                    <div class="stat-label" id="total-sessions">0 sessions</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">This Week</div>
+                    <div class="stat-value" id="week-sessions">0 sessions</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">Avg Session</div>
+                    <div class="stat-value" id="avg-session">0m</div>
+                    <div class="stat-label">per session</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Weekly Study Pattern</h2>
+                <div class="week-pattern" id="weekly-pattern">
+                    <!-- Weekly pattern will be generated dynamically -->
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Study by Subject</h2>
+                <div class="subject-stats" id="subject-stats">
+                    <!-- Subject stats will be generated dynamically -->
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Recent Study Sessions</h2>
+                <div id="recent-sessions">
+                    <p>No study sessions recorded yet.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Subjects Page -->
+        <section id="subjects" class="page">
+            <div class="card">
+                <h2>Your Subjects</h2>
+                <div class="form-group">
+                    <label for="new-subject">Add New Subject</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" class="form-control" id="new-subject" placeholder="Enter subject name">
+                        <button class="btn btn-primary" id="add-subject">Add</button>
+                    </div>
+                </div>
+                <div id="subjects-list">
+                    <!-- Subjects will be added here dynamically -->
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Add/Edit Task Modal -->
+    <div class="modal" id="task-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Add New Task</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="form-group">
+                <label for="task-title">Task Title</label>
+                <input type="text" class="form-control" id="task-title" placeholder="Enter task title">
+            </div>
+            <div class="form-group">
+                <label for="task-subject">Subject</label>
+                <select class="form-control" id="task-subject">
+                    <option value="">Select a subject</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="task-due-date">Due Date</label>
+                <input type="date" class="form-control" id="task-due-date">
+            </div>
+            <div class="form-group">
+                <label for="task-priority">Priority</label>
+                <select class="form-control" id="task-priority">
+                    <option value="low">Low</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="task-urgent"> Mark as urgent
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-task">Cancel</button>
+                <button class="btn btn-primary" id="save-task">Save Task</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Task saved successfully!</span>
+    </div>
+
+    <script src="script.js"></script>
+    
+  
+</body>
+</html>
